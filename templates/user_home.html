@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>الإشعارات العامة - الصفحة الرئيسية</title>
+<link rel="stylesheet" href="/static/css/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="container">
+<h2>الإشعارات</h2>
+<div id="news"></div>
+<p>تأكد أنك أضفت الموقع للشاشة الرئيسية وسمحت بالإشعارات.</p>
+</div>
+
+<script src="/static/js/main.js"></script>
+<script>
+async function loadNews(){
+  const res = await fetch('/api/notifications');
+  const data = await res.json();
+  const c = document.getElementById('news');
+  c.innerHTML='';
+  data.forEach(n=>{
+    const el = document.createElement('div');
+    el.innerHTML=`<h4>${n.title}</h4>
+      <p>${n.body}</p>
+      ${n.category?`<b>فئة:</b> ${n.category}<br>`:''}
+      ${n.image?`<img src="/static/uploads/${n.image}" style="max-width:140px"><br>`:''}
+      ${n.link?`<a href="${n.link}" target="_blank">رابط الإشعار</a><br>`:''}`;
+    c.appendChild(el);
+  });
+}
+loadNews();
+</script>
+</body>
+</html>
